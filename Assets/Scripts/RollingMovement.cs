@@ -50,12 +50,12 @@ public class RollingMovement : MonoBehaviour
 
     void AttachNewLimb(Collision2D collision)
     {
-        print(collision.collider.attachedRigidbody);
+        //print(collision.collider.attachedRigidbody);
         Rigidbody2D newRB = collision.collider.attachedRigidbody;
-        Limbs.Push(newRB);
-        print(Limbs);
-    }
 
+        //Limbs.Push(newRB);
+        //print(Limbs);
+    }
 
 
 
