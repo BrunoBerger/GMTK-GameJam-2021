@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private Transform target;
+    public Vector3 offset;
+    [Range(0, 0.5f)]public float followSpeed;
 
-    // Update is called once per frame
-    void Update()
+    private Vector3 desiredPosition;
+    private Vector3 smoothedPosition;
+
+    void Start () 
     {
-        
+        target = GameObject.Find("Player").transform;
+    }
+    
+    private void FixedUpdate()
+    {
+        desiredPosition = target.position + offset;
+        smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, followSpeed);
+        transform.position = smoothedPosition;
     }
 }
