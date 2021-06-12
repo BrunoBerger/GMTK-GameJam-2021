@@ -13,7 +13,7 @@ public class RollingMovement : MonoBehaviour
     public float maxSpeed;
     public float jumpStr;
 
-    public Stack<Rigidbody2D> Limbs;
+    public Stack<Rigidbody2D> Limbs = new Stack<Rigidbody2D>();
 
     // Start is called before the first frame update
     void Start()
@@ -35,12 +35,12 @@ public class RollingMovement : MonoBehaviour
         // Debug.DrawRay(transform.position, userInput*10f, Color.red);
 
 
-        if (isGrounded)
-        {
             if (currentRotation < maxSpeed)
             {
                 rb.AddTorque(userInput.x*rollPower, ForceMode2D.Force);
             }
+        if (isGrounded)
+        {
             if (Input.GetButton("Jump"))
             {
                 rb.AddForce(new Vector2(0, jumpStr));
@@ -50,8 +50,10 @@ public class RollingMovement : MonoBehaviour
 
     void AttachNewLimb(Collision2D collision)
     {
+        print(collision.collider.attachedRigidbody);
         Rigidbody2D newRB = collision.collider.attachedRigidbody;
         Limbs.Push(newRB);
+        print(Limbs);
     }
 
 
@@ -61,11 +63,9 @@ public class RollingMovement : MonoBehaviour
     {
         if (collision.collider.name == "Ground")
         {
-            //Output the message
-            print("Ground touch");
             isGrounded = true;
         }
-        if (collision.gameObject.tag == "Limb")
+        if (collision.gameObject.tag == "potLimb")
         {
             AttachNewLimb(collision);
         }
@@ -75,8 +75,6 @@ public class RollingMovement : MonoBehaviour
         
         if (collision.collider.name == "Ground")
         {
-            //Output the message
-            print("Ground left");
             isGrounded = false;
         }
     }

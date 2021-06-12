@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Limb
+  - potLimb
   layers:
   - Default
   - TransparentFX
