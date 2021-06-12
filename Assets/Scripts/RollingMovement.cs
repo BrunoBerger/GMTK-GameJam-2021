@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using MilkShake;
+
 public class RollingMovement : MonoBehaviour
 {
     Vector2 userInput;
@@ -13,7 +15,10 @@ public class RollingMovement : MonoBehaviour
     public float maxSpeed;
     public float jumpStr;
 
-    public Stack<Rigidbody2D> Limbs = new Stack<Rigidbody2D>();
+    //public Stack<Rigidbody2D> Limbs = new Stack<Rigidbody2D>();
+
+    public Shaker MyShaker;
+    public ShakePreset ShakePreset;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +49,7 @@ public class RollingMovement : MonoBehaviour
             if (Input.GetButton("Jump"))
             {
                 rb.AddForce(new Vector2(0, jumpStr));
+                MyShaker.Shake(ShakePreset);
             }
         }
     }
