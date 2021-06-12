@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GeneralManager : MonoBehaviour
 {
+    bool pauseToggle = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,10 +15,22 @@ public class GeneralManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Exit"))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            Application.LoadLevel(Application.loadedLevel);
-            
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseToggle)
+            {
+                Time.timeScale = 1;
+            }
+            else
+            {
+                Time.timeScale = 0;
+            }
+            pauseToggle = !pauseToggle;
         }
     }
 }
