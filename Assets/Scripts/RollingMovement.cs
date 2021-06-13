@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using MilkShake;
 
@@ -21,6 +22,10 @@ public class RollingMovement : MonoBehaviour
     //public Stack<Rigidbody2D> Limbs = new Stack<Rigidbody2D>();
 
     public int childLimbCounter = 0;
+    public Text ScoreText;
+    public AudioSource audioData;
+    bool playingSound = false;
+    float offGroundDelay = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +37,24 @@ public class RollingMovement : MonoBehaviour
     void Update()
     {
 
-    }     
-
+        if (groundConnections >= 1 && !playingSound)
+        {
+            playingSound = true;
+            offGroundDelay = 0;
+            audioData.Play(0);
+        }
+        if (groundConnections <= 0)
+        {
+            offGroundDelay += Time.deltaTime;
+            print(offGroundDelay);
+        }
+        if (offGroundDelay > 0.2)
+        {
+            audioData.Stop();
+        }
+    }   
+        
+ 
     void FixedUpdate()
     {
         currentRotation = (Mathf.Abs(rb.angularVelocity));
@@ -55,6 +76,11 @@ public class RollingMovement : MonoBehaviour
         }
     }
 
+    public void updateScore()
+    {
+        childLimbCounter++;
+        ScoreText.text = "Score: " + childLimbCounter.ToString();
+    }
 
 }
 

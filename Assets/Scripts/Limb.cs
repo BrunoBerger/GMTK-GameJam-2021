@@ -14,7 +14,7 @@ public class Limb : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public bool groundCheck(Collision2D collision)
@@ -24,7 +24,7 @@ public class Limb : MonoBehaviour
     }
     void AttachNewLimb(Collision2D collision)
     {
-        parentScript.childLimbCounter++;
+        parentScript.updateScore();
 
         Collider2D nextLimb = collision.collider;
         gameObject.AddComponent<FixedJoint2D>();
@@ -41,32 +41,52 @@ public class Limb : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (gameObject.GetComponent<Limb>().enabled)
+        {
+            colEnterHandle(collision);
+        }
+        else { return; }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (gameObject.GetComponent<Limb>().enabled)
+        {
+            colExitHandle(collision);
+        }
+        else { return; }
+    }
+
+
+    void colEnterHandle(Collision2D collision)
+    {
         if (collision.collider.name == "Ground")
         {
-            parentScript.groundConnections =+ 1;
+            parentScript.groundConnections++;
         }
         if (collision.gameObject.CompareTag("potLimb"))
         {
             AttachNewLimb(collision);
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
+    void colExitHandle(Collision2D collision)
     {
-
         if (collision.collider.name == "Ground")
         {
-            parentScript.groundConnections = -1;
+            parentScript.groundConnections--;
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        FixedJoint2D J = gameObject.GetComponent<FixedJoint2D>();
-        if (J)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(J.anchor, J.connectedAnchor);
-            Gizmos.DrawSphere(J.connectedAnchor, 2f);
-        }
-    }
+
+
+
+    // private void OnDrawGizmos()
+    // {
+    //     FixedJoint2D J = gameObject.GetComponent<FixedJoint2D>();
+    //     if (J)
+    //     {
+    //         Gizmos.color = Color.blue;
+    //         Gizmos.DrawLine(J.anchor, J.connectedAnchor);
+    //         Gizmos.DrawWireSphere(J.connectedAnchor, 0.5f);
+    //     }
+    // }
 }
