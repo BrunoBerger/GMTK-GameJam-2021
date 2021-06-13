@@ -24,8 +24,8 @@ public class RollingMovement : MonoBehaviour
     public int childLimbCounter = 0;
     public Text ScoreText;
     public AudioSource audioData;
-    bool playingSound = false;
-    float offGroundDelay = 0f;
+    public bool playingSound = false;
+    public float offGroundDelay = 0f;
 
     // Start is called before the first frame update
     void Start()

@@ -11,28 +11,16 @@ public class Limb : MonoBehaviour
         parentScript = GameObject.Find("Player").GetComponent<RollingMovement>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public bool groundCheck(Collision2D collision)
-    {
-        return true;
-
-    }
     void AttachNewLimb(Collision2D collision)
     {
         parentScript.updateScore();
 
         Collider2D nextLimb = collision.collider;
-        gameObject.AddComponent<FixedJoint2D>();
-        FixedJoint2D JointToNext = gameObject.GetComponent<FixedJoint2D>();
-        JointToNext.enabled = true;
+        FixedJoint2D JointToNext = gameObject.AddComponent<FixedJoint2D>() as FixedJoint2D;
+        // JointToNext.enabled = true;
         JointToNext.connectedBody = nextLimb.attachedRigidbody;
-        JointToNext.anchor = collision.GetContact(0).point;
-        //JointToNext.connectedAnchor = collision.GetContact(0).point;
+        //JointToNext.anchor = collision.GetContact(0).point;
+        //JointToNext.autoConfigureConnectedAnchor = true;
 
         nextLimb.gameObject.tag = "Limb";
         nextLimb.gameObject.GetComponent<Limb>().enabled = true;
@@ -79,14 +67,14 @@ public class Limb : MonoBehaviour
 
 
 
-    // private void OnDrawGizmos()
-    // {
-    //     FixedJoint2D J = gameObject.GetComponent<FixedJoint2D>();
-    //     if (J)
-    //     {
-    //         Gizmos.color = Color.blue;
-    //         Gizmos.DrawLine(J.anchor, J.connectedAnchor);
-    //         Gizmos.DrawWireSphere(J.connectedAnchor, 0.5f);
-    //     }
-    // }
+    private void OnDrawGizmos()
+    {
+        FixedJoint2D J = gameObject.GetComponent<FixedJoint2D>();
+        if (J)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(J.anchor, J.connectedAnchor);
+            Gizmos.DrawWireSphere(J.connectedAnchor, 0.5f);
+        }
+    }
 }
