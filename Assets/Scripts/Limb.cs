@@ -5,8 +5,8 @@ using UnityEngine;
 public class Limb : MonoBehaviour
 {
     RollingMovement parentScript;
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         parentScript = GameObject.Find("Player").GetComponent<RollingMovement>();
     }
@@ -28,7 +28,12 @@ public class Limb : MonoBehaviour
 
         Collider2D nextLimb = collision.collider;
         gameObject.AddComponent<FixedJoint2D>();
-        gameObject.GetComponent<FixedJoint2D>().connectedBody = nextLimb.attachedRigidbody;
+        FixedJoint2D JointToNext = gameObject.GetComponent<FixedJoint2D>();
+        JointToNext.enabled = true;
+        JointToNext.connectedBody = nextLimb.attachedRigidbody;
+        JointToNext.anchor = collision.GetContact(0).point;
+        //JointToNext.connectedAnchor = collision.GetContact(0).point;
+
         nextLimb.gameObject.tag = "Limb";
         nextLimb.gameObject.GetComponent<Limb>().enabled = true;
     }
@@ -51,6 +56,17 @@ public class Limb : MonoBehaviour
         if (collision.collider.name == "Ground")
         {
             parentScript.groundConnections = -1;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        FixedJoint2D J = gameObject.GetComponent<FixedJoint2D>();
+        if (J)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(J.anchor, J.connectedAnchor);
+            Gizmos.DrawSphere(J.connectedAnchor, 2f);
         }
     }
 }

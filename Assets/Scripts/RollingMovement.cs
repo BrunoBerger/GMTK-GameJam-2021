@@ -37,9 +37,8 @@ public class RollingMovement : MonoBehaviour
     void FixedUpdate()
     {
         currentRotation = (Mathf.Abs(rb.angularVelocity));
-        // Horizontal Movement
         userInput.Set(Input.GetAxis("Horizontal")*-1, Input.GetAxis("Vertical"));
-        // Debug.DrawRay(transform.position, userInput*10f, Color.red);
+        // Debug.DrawRay(transform.position, Vector2.up*10f, Color.red);
 
 
         if (currentRotation < maxSpeed)
