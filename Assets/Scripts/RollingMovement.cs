@@ -9,16 +9,18 @@ public class RollingMovement : MonoBehaviour
     Vector2 userInput;
     Rigidbody2D rb;
 
-    public bool isGrounded;
+    public int groundConnections;
     public float currentRotation;
     public float rollPower;
     public float maxSpeed;
     public float jumpStr;
 
-    //public Stack<Rigidbody2D> Limbs = new Stack<Rigidbody2D>();
-
     public Shaker MyShaker;
     public ShakePreset ShakePreset;
+
+    //public Stack<Rigidbody2D> Limbs = new Stack<Rigidbody2D>();
+
+    public int childLimbCounter = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +31,8 @@ public class RollingMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
+
+    }     
 
     void FixedUpdate()
     {
@@ -40,49 +42,20 @@ public class RollingMovement : MonoBehaviour
         // Debug.DrawRay(transform.position, userInput*10f, Color.red);
 
 
-            if (currentRotation < maxSpeed)
-            {
-                rb.AddTorque(userInput.x*rollPower, ForceMode2D.Force);
-            }
-        if (isGrounded)
+        if (currentRotation < maxSpeed)
+        {
+            rb.AddTorque(userInput.x*rollPower, ForceMode2D.Force);
+        }
+        if (groundConnections>0)
         {
             if (Input.GetButton("Jump"))
             {
-                rb.AddForce(new Vector2(0, jumpStr));
+                rb.AddForce(new Vector2(0, jumpStr*groundConnections));
                 MyShaker.Shake(ShakePreset);
             }
         }
     }
 
-    void AttachNewLimb(Collision2D collision)
-    {
-        //print(collision.collider.attachedRigidbody);
-        Rigidbody2D newRB = collision.collider.attachedRigidbody;
 
-        //Limbs.Push(newRB);
-        //print(Limbs);
-    }
-
-
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.name == "Ground")
-        {
-            isGrounded = true;
-        }
-        if (collision.gameObject.tag == "potLimb")
-        {
-            AttachNewLimb(collision);
-        }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        
-        if (collision.collider.name == "Ground")
-        {
-            isGrounded = false;
-        }
-    }
 }
 
